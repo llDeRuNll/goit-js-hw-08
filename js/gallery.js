@@ -79,9 +79,22 @@ imageElement.addEventListener('click', event => {
     if (!picture) {
         return;
     }
-     const instance = basicLightbox.create(`
+   const instance = basicLightbox.create(`
             <img src="${picture.dataset.source}" width="800" height="600">
-        `);
+        `, {
+            onShow: (instance) => {
+                document.addEventListener('keydown', onEscClose);
+            },
+            onClose: (instance) => {
+                document.removeEventListener('keydown', onEscClose);
+            }
+   });
+     function onEscClose(event) {
+            if (event.key === 'Escape') {
+                instance.close();
+            }
+        }
 
         instance.show();
+    
 })
